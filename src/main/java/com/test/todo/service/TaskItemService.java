@@ -34,14 +34,28 @@ public class TaskItemService {
 		return task.orElseThrow(() -> new NotFoundException("Could not fine the task item: " + id));
 	}
 
-	public TaskItem create(TaskItem taskItem) {
+	public TaskItem create(Task task, TaskItem taskItem) {
 		taskItem.setCreateDate(new Date());
+		taskItem.setTask(task);
 		return taskItemRepository.save(taskItem);
 	}
 	
-	public TaskItem edit(Integer id, TaskItem taskItem) {
+	public TaskItem editName(Integer id, TaskItem taskItem) {
 		return taskItemRepository.findById(id).map((TaskItem currentTaskItem) -> {
 			currentTaskItem.setName(taskItem.getName());
+			return taskItemRepository.save(currentTaskItem);
+		}).orElseThrow(() -> new NotFoundException("Could not fine the task item: " + id));
+	}
+	
+	public TaskItem editStatus(Integer id) {
+		return taskItemRepository.findById(id).map((TaskItem currentTaskItem) -> {
+			currentTaskItem.setFinish(!currentTaskItem.isFinish());
+			if(currentTaskItem.isFinish()) {
+				currentTaskItem.setFinishDate(new Date());
+			} else {
+				currentTaskItem.setFinishDate(null);
+			}
+			
 			return taskItemRepository.save(currentTaskItem);
 		}).orElseThrow(() -> new NotFoundException("Could not fine the task item: " + id));
 	}

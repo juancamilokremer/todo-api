@@ -15,20 +15,19 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tasks")
 public class Task {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	@Column(name = "create_date")
 	private Date createDate;
-	/*
-	 * @OneToMany(cascade = CascadeType.ALL, mappedBy = "task") private
-	 * List<TaskItem> items;
-	 */
-	
-	public Task() {}
-	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+	private List<TaskItem> items;
+
+	public Task() {
+	}
+
 	public Task(String name, boolean finish, Date createDate, Date finishDate) {
 		this.name = name;
 		this.createDate = createDate;
@@ -57,4 +56,8 @@ public class Task {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
+
+//	public List<TaskItem> getItems() {
+//		return items;
+//	}
 }

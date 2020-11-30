@@ -39,6 +39,13 @@ public class TaskController {
 		return taskItemService.findByTaskId(task);
 	}
 
+	@PostMapping("/tasks/{id}/items")
+	TaskItem addTaskItem(@RequestBody TaskItem taskItem, @PathVariable Integer id) {
+		Task task = taskService.findById(id);
+		
+		return taskItemService.create(task, taskItem);
+	}
+	
 	@GetMapping("/tasks/{id}")
 	Task taskById(@PathVariable Integer id) {
 		return taskService.findById(id);
