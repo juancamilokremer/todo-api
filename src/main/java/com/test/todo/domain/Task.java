@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,15 +17,19 @@ import javax.persistence.Table;
 public class Task {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
+	@Column(name = "create_date")
 	private Date createDate;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
-	private List<TaskItem> items;
+	/*
+	 * @OneToMany(cascade = CascadeType.ALL, mappedBy = "task") private
+	 * List<TaskItem> items;
+	 */
+	
+	public Task() {}
 	
 	public Task(String name, boolean finish, Date createDate, Date finishDate) {
-		super();
 		this.name = name;
 		this.createDate = createDate;
 	}

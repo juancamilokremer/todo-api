@@ -2,6 +2,7 @@ package com.test.todo.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,18 +15,21 @@ import javax.persistence.Table;
 @Table(name = "task_items")
 public class TaskItem {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private boolean finish;
+	@Column(name = "create_date")
 	private Date createDate;
+	@Column(name = "finish_date")
 	private Date finishDate;
 	@ManyToOne
 	@JoinColumn(name = "task_id")
 	private Task task;
-	
+
+	public TaskItem() {}
+			
 	public TaskItem(String name, boolean finish, Date createDate, Date finishDate) {
-		super();
 		this.name = name;
 		this.finish = finish;
 		this.createDate = createDate;
