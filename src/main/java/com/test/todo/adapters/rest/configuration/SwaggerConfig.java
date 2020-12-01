@@ -1,4 +1,4 @@
-package com.test.todo.configuration;
+package com.test.todo.adapters.rest.configuration;
 
 import java.util.Collections;
 
@@ -19,7 +19,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.test.todo.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.test.todo.adapters.rest.resources"))
 				.paths(PathSelectors.any()).build().apiInfo(getApiInfo());
 	}
 

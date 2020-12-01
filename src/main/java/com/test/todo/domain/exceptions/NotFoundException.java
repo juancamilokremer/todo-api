@@ -1,4 +1,4 @@
-package com.test.todo.controller.exceptions;
+package com.test.todo.domain.exceptions;
 
 @SuppressWarnings("serial")
 public class NotFoundException extends RuntimeException {

@@ -1,4 +1,4 @@
-package com.test.todo.controller;
+package com.test.todo.adapters.rest.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,32 +9,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.todo.domain.TaskItem;
-import com.test.todo.service.TaskItemService;
+import com.test.todo.domain.models.todo.TaskItem;
+import com.test.todo.domain.services.todo.TaskItemService;
 
 @RestController
-@RequestMapping("/todo")
-public class TaskItemController {
-
+@RequestMapping(TaskItemResource.TODO)
+public class TaskItemResource {
+	static final String TODO = "/todo";
+	static final String TASK_ITEMS = "/taskItems";
+	static final String CHANGE_STATUS = "/changeStatus";
+	
 	@Autowired
 	private TaskItemService taskItemService;
 
-	@GetMapping("/taskItems/{id}")
+	@GetMapping(TASK_ITEMS + "/{id}")
 	TaskItem taskItemById(@PathVariable Integer id) {
 		return taskItemService.findById(id);
 	}
 
-	@PutMapping("/taskItems/{id}")
+	@PutMapping(TASK_ITEMS + "/{id}")
 	TaskItem editTaskItemName(@RequestBody TaskItem taskItem, @PathVariable Integer id) {
-		return taskItemService.editName(id, taskItem);
+		return taskItemService.updateName(id, taskItem);
 	}
 	
-	@PutMapping("/taskItems/{id}/changeStatus")
+	@PutMapping(TASK_ITEMS + "/{id}" + CHANGE_STATUS)
 	TaskItem changeStatusTaskItem(@PathVariable Integer id) {
-		return taskItemService.editStatus(id);
+		return taskItemService.updateStatus(id);
 	}
 
-	@DeleteMapping("/taskItems/{id}")
+	@DeleteMapping(TASK_ITEMS + "/{id}")
 	void deleteTaskItem(@PathVariable Integer id) {
 		taskItemService.delete(id);
 	}

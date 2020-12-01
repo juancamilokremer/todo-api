@@ -1,4 +1,4 @@
-package com.test.todo.domain;
+package com.test.todo.adapters.mariadb.todo.entities;
 
 import java.util.Date;
 
@@ -11,9 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
+import com.test.todo.domain.models.todo.TaskItem;
+
 @Entity
 @Table(name = "task_items")
-public class TaskItem {
+public class TaskItemEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -25,15 +29,15 @@ public class TaskItem {
 	private Date finishDate;
 	@ManyToOne
 	@JoinColumn(name = "task_id")
-	private Task task;
+	private TaskEntity task;
 
-	public TaskItem() {}
-			
-	public TaskItem(String name, boolean finish, Date createDate, Date finishDate) {
-		this.name = name;
-		this.finish = finish;
-		this.createDate = createDate;
-		this.finishDate = finishDate;
+	public TaskItemEntity() {
+		// empty from spring.
+	}
+
+	public TaskItemEntity(TaskItem taskItem) {
+		this.id = taskItem.getId();
+		this.name = taskItem.getName();
 	}
 
 	public Integer getId() {
@@ -76,11 +80,18 @@ public class TaskItem {
 		this.finishDate = finishDate;
 	}
 
-	public Task getTask() {
+	public TaskEntity getTask() {
 		return task;
 	}
 
-	public void setTask(Task task) {
+	public void setTask(TaskEntity task) {
 		this.task = task;
+	}
+
+	public TaskItem toTaskItem() {
+		TaskItem taskItem = new TaskItem();
+		BeanUtils.copyProperties(this, taskItem);
+
+		return taskItem;
 	}
 }

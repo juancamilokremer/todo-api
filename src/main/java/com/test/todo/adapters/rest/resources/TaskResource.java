@@ -1,6 +1,6 @@
-package com.test.todo.controller;
+package com.test.todo.adapters.rest.resources;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,56 +12,58 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.todo.domain.Task;
-import com.test.todo.domain.TaskItem;
-import com.test.todo.service.TaskItemService;
-import com.test.todo.service.TaskService;
+import com.test.todo.domain.models.todo.Task;
+import com.test.todo.domain.models.todo.TaskItem;
+import com.test.todo.domain.services.todo.TaskItemService;
+import com.test.todo.domain.services.todo.TaskService;
 
 @RestController
-@RequestMapping("/todo")
-public class TaskController {
+@RequestMapping(TaskResource.TODO)
+public class TaskResource {
+	static final String TODO = "/todo";
+	static final String TASKS = "/tasks";
+	static final String ITEMS = "/items";
 
 	@Autowired
 	private TaskService taskService;
 	@Autowired
 	private TaskItemService taskItemService;
 
-	@GetMapping("/tasks")
-	public List<Task> allTasks() {
-
+	@GetMapping(TASKS)
+	public Stream<Task> allTasks() {
 		return taskService.findAll();
 	}
-	
-	@GetMapping("/tasks/{id}/items")
-	public List<TaskItem> allTaskItems(@PathVariable Integer id) {
+
+	@GetMapping(TASKS + "/{id}" + ITEMS)
+	public Stream<TaskItem> allTaskItems(@PathVariable Integer id) {
 		Task task = taskService.findById(id);
-		
+
 		return taskItemService.findByTaskId(task);
 	}
 
-	@PostMapping("/tasks/{id}/items")
+	@PostMapping(TASKS + "/{id}" + ITEMS)
 	TaskItem addTaskItem(@RequestBody TaskItem taskItem, @PathVariable Integer id) {
 		Task task = taskService.findById(id);
-		
+
 		return taskItemService.create(task, taskItem);
 	}
-	
-	@GetMapping("/tasks/{id}")
+
+	@GetMapping(TASKS + "/{id}")
 	Task taskById(@PathVariable Integer id) {
 		return taskService.findById(id);
 	}
 
-	@PostMapping("/tasks")
+	@PostMapping(TASKS)
 	Task createTask(@RequestBody Task task) {
 		return taskService.create(task);
 	}
 
-	@PutMapping("/tasks/{id}")
+	@PutMapping(TASKS + "/{id}")
 	Task editTask(@RequestBody Task task, @PathVariable Integer id) {
-		return taskService.edit(id, task);
+		return taskService.update(id, task);
 	}
 
-	@DeleteMapping("/tasks/{id}")
+	@DeleteMapping(TASKS + "/{id}")
 	void deleteTask(@PathVariable Integer id) {
 		taskService.delete(id);
 	}

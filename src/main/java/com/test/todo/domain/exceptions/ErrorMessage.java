@@ -1,4 +1,4 @@
-package com.test.todo.controller.exceptions;
+package com.test.todo.domain.exceptions;
 
 public class ErrorMessage {
 	private String exception;

@@ -1,4 +1,4 @@
-package com.test.todo.domain;
+package com.test.todo.adapters.mariadb.todo.entities;
 
 import java.util.Date;
 import java.util.List;
@@ -12,9 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
+import com.test.todo.domain.models.todo.Task;
+
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class TaskEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +27,16 @@ public class Task {
 	@Column(name = "create_date")
 	private Date createDate;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
-	private List<TaskItem> items;
+	private List<TaskItemEntity> items;
 
-	public Task() {
+	public TaskEntity() {
+		// empty from spring.
 	}
 
-	public Task(String name, boolean finish, Date createDate, Date finishDate) {
-		this.name = name;
-		this.createDate = createDate;
+	public TaskEntity(Task task) {
+		this.id = task.getId();
+		this.name = task.getName();
+		this.createDate = task.getCreateDate();
 	}
 
 	public Integer getId() {
@@ -57,6 +63,13 @@ public class Task {
 		this.createDate = createDate;
 	}
 
+	public Task toTask() {
+        Task task = new Task();
+        BeanUtils.copyProperties(this, task);
+        
+        return task;
+    }
+	
 //	public List<TaskItem> getItems() {
 //		return items;
 //	}
